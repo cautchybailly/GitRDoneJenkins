@@ -11,7 +11,7 @@ stages {
         steps {
             withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
             credentialsId: 'terraform-cautchy']]) {
-                '''sh
+                sh'''
                 echo "AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID - AWS credentials set successfully"
                 aws sts get-caller-identity
                 '''
