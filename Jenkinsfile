@@ -11,10 +11,10 @@ stages {
         steps {
             withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
             credentialsId: 'terraform-cautchy']]) {
-                ```sh
+                '''sh
                 echo "AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID - AWS credentials set successfully"
                 aws sts get-caller-identity
-                ```
+                '''
             }
         }
     }
@@ -32,7 +32,7 @@ stages {
                 $class: 'AmazonWebServicesCredentialsBinding',
                 credentialsId: 'terraform-cautchy']]) {
                     sh '''
-                    cd "Gut Check/Terraform"
+                    cd "Terraform"
                     terraform init
                 '''
             }
@@ -44,7 +44,7 @@ stages {
             withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
             credentialsId: 'terraform-cautchy']]) {
                 sh '''
-                cd "Gut Check/Terraform"
+                cd "Terraform"
                 terraform plan
                 '''
             }
@@ -56,8 +56,8 @@ stages {
             withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
             credentialsId: 'terraform-cautchy']]) {
                 sh '''
-                cd "Gut Check/Terraform"
-                 terraform apply -auto-approve
+                cd "Terraform"
+                terraform apply -auto-approve
                 '''
             }
         }

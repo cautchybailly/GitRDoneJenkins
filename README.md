@@ -120,6 +120,16 @@ PART 2 — Jenkins Pipeline Setup
     - Enter your Jenkins URL with /github-webhook/ appended (i.e. http://54.210.177.247:8080/github-webhook)
     - Set the content type to 'application/json' and select the "Push" event.
 
+- Add PAT (personal access token) to Jenkins by going to Settings > Developer Settings > Personal Access Token > New personal access token
+    - repo & admin:repo_hook
+
+- Add token to Jenkins Credentials
+    - Go to Manage Jenkins > Credentials > secret text
+
+- Add AWS Credentials
+    - In AWS go to IAM > Users > (select your Jenkins user or role)
+    - retrieve access key ID and secret key
+
 **Jenkinsfile**
 Our Jenkinsfile is stating that this is a pipeline and we can run it on any Jenkins server that is available. Before running anything, we set the environment variable so every stage knows which AWS region to use. Then we build on everything in order (stage by stage of course).
 
