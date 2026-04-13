@@ -1,7 +1,6 @@
 
 resource "aws_s3_bucket" "class7_gutcheck_bucket" {
   bucket = "class7-gutcheck-bucket"
-  acl    = "private"
 
   tags = {
     Name = "class7-gutcheck-bucket"
