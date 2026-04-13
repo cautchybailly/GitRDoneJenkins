@@ -1,50 +1,6 @@
-resource "aws_s3_object" "github-repo-showing-files-pushed" {
-  bucket       = aws_s3_bucket.class7_gutcheck_bucket.id
-  key          = "github-repo-showing-files-pushed.png"
-  source       = "./proof/github-repo-showing-files-pushed.png"
-  content_type = "image/png"
 
-  etag = filemd5("./proof/github-repo-showing-files-pushed.png")
-}
-
-resource "aws_s3_object" "gut-check-webhooks" {
-  bucket       = aws_s3_bucket.class7_gutcheck_bucket.id
-  key          = "gut-check-webhooks.png"
-  source       = "./proof/gut-check-webhooks.png"
-  content_type = "image/png"
-
-  etag = filemd5("./proof/gut-check-webhooks.png")
-}
-
-resource "aws_s3_object" "Jenkins-5-stages-green" {
-  bucket       = aws_s3_bucket.class7_gutcheck_bucket.id
-  key          = "Jenkins-5-stages-green.png"
-  source       = "./proof/Jenkins-5-stages-green.png"
-  content_type = "image/png"
-
-  etag = filemd5("./proof/Jenkins-5-stages-green.png")
-}
-
-resource "aws_s3_object" "outputs" {
-  bucket       = aws_s3_bucket.class7_gutcheck_bucket.id
-  key          = "outputs.png"
-  source       = "./proof/outputs.png"
-  content_type = "image/png"
-
-  etag = filemd5("./proof/outputs.png")
-}
-
-resource "aws_s3_object" "TKO-Armageddon-link" {
-  bucket       = aws_s3_bucket.class7_gutcheck_bucket.id
-  key          = "TKO-Armageddon-link.md"
-  source       = "./proof/TKO-Armageddon-link.md"
-  content_type = "text/markdown"
-
-  etag = filemd5("./proof/TKO-Armageddon-link.md")
-}
-
-resource "aws_s3_bucket" "README.md" {
-  bucket = var.bucket_name
+resource "aws_s3_bucket" "Class7_gutcheck_bucket" {
+  bucket = "class7-gutcheck-bucket"
   acl    = "private"
 
   tags = {
@@ -76,4 +32,22 @@ resource "aws_s3_bucket_policy" "class7_gut_check" {
       }
     ]
   })
+}
+
+### Object to be uploaded
+
+resource "aws_s3_object" "screenshots" {
+  for_each = fileset("../Screenshots", "**/*")
+
+  bucket = aws_s3_bucket.class7_gutcheck_bucket.id
+  key    = "Artifacts/${each.value}"
+  source = "../Screenshots/${each.value}"
+  etag   = filemd5("../Screenshots/${each.value}")
+}
+
+resource "aws_s3_object" "TKO-armageddon-link" {
+  bucket = aws_s3_bucket.class7_gutcheck_bucket.id
+  key    = "Artifacts/TKO-armageddon-link.md"
+  source = "../TKO-armageddon-link.md"
+  etag   = filemd5("../TKO-armageddon-link.md")
 }
