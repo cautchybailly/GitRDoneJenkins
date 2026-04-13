@@ -67,9 +67,10 @@ class7-gut-check/
 ---
 
 ## 4. Steps to Complete the Lab
+Pre-requisite : make sure that you have the files uploaded to your GitHub. Keep note of the GitHub URL for the repository
 
 -------------------------------------------
-PART 1 — Terraform: Provision the S3 Bucket
+PART 1 — Terraform: Get your code ready
 -------------------------------------------
 Please see the individual Terraform files for the code. Effectively, the code is performing the following:
 
@@ -110,6 +111,14 @@ terraform output
 -------------------------------------------
 PART 2 — Jenkins Pipeline Setup 
 -------------------------------------------
+- In Jenkins : 
+    - go to your job configuration and check "Github hook trigger for GITS SCM polling".
+    - for the pipeline, select 'Pipeline Script' > Enter Pipeline Script (contents of Jenkinsfile)
+    - Add AWS credentials
+- in GitHub : 
+    - go to Repository Settings > Webhooks > Add Webhook
+    - Enter your Jenkins URL with /github-webhook/ appended (i.e. http://54.210.177.247:8080/github-webhook)
+    - Set the content type to 'application/json' and select the "Push" event.
 
 **Jenkinsfile**
 Our Jenkinsfile is stating that this is a pipeline and we can run it on any Jenkins server that is available. Before running anything, we set the environment variable so every stage knows which AWS region to use. Then we build on everything in order (stage by stage of course).
@@ -123,7 +132,6 @@ Our Jenkinsfile is stating that this is a pipeline and we can run it on any Jenk
 **Stage 4**: actually build the S3 bucket
 
 **Stage 5**: print confirmation of the build log as proof of completion
-
 
 -------------------------------------------
 PART 3 — GitHub Webhook Setup
