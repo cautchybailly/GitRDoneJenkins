@@ -56,6 +56,7 @@ class7-gut-check/
 ├── Screenshots
 | ├── gut-check-github-files.png
 | ├── gut-check-webhooks.png
+| ├── gutcheck-s3-bucket-artifacts.png
 | ├── jenkins-5-stages-green.png
 | ├── jenkins-pipeline-successful.png
 | └── theo-armageddon-approval.png
@@ -83,27 +84,6 @@ This is the "what are we actually building" portion of the code. Specifically, w
 **outputs.tf** |
 This portion is the "Tell me what got created" portion. Since we want to know the ID and ARN of the bucket that was created, we configure this output file to query and provide these pieces of information after everything has been successfully created. This information will be referenced with other AWS services if we were to continue onwards and need this bucker and can be used to let Jenkins know which specific bucket it needs to interact with.
 
-**Run Terraform:** |
-In order to run everything that we have build, you will head into the appropriate folder with the files and run the Terrafom IvPAD. The commands needed look like this:
-
-```bash
-cd terraform/
-
-# Initialize Terraform (downloads AWS provider)
-terraform init
-
-# Make sure that the Terraform code chosen is valid
-terraform validate
-
-# Preview what will be created
-terraform plan
-
-# Deploy the S3 bucket
-terraform apply -auto-approve
-
-# Confirm output
-terraform output
-```
 
 -------------------------------------------
 PART 2 — Jenkins Pipeline Setup 
@@ -141,7 +121,7 @@ Our Jenkinsfile is stating that this is a pipeline and we can run it on any Jenk
 **Stage 5**: print confirmation of the build log as proof of completion
 
 -------------------------------------------
-PART 3 — GitHub Webhook Setup
+PART 3 — GitHub Webhook Trigger
 -------------------------------------------
 
 **Step 1 — Create your GitHub repo and push all files**
@@ -188,42 +168,35 @@ See the file itself for exact details. Push this file to your repo along with ev
 
 > "How do I know you did it?" ~ Papa Bailly
 
-- [ ] Screenshot: Terraform `init` output
-![alt text](terraform-init-successful.png)
+- [X] Screenshot: Github Files Uploaded Confirmation
+![alt text](Screenshots/gut-check-github-files.png)
 
-- [ ] Screenshot: Terraform `plan` output
-![alt text](terraform-plan.png)
+- [X] Screenshot: Web Hooks
+![alt text](Screenshots/gut-check-webhooks.png)
 
 - [x] Screenshot: Screenshots/artifacts uploaded inside the S3 bucket
-![alt text](s3-bucket-created-with-placeholder.png)
+![alt text](Screenshots/gutcheck-s3-bucket-artifacts.png)
 
 - [x] Screenshot: Jenkins pipeline — all stages green
-![alt text](Jenkins-5-stages-green.png)
+![alt text](Screenshots/jenkins-5-stages-green.png)
 
-- [x] Screenshot: GitHub webhook delivery confirmation (green checkmark)
-![alt text](gut-check-webhooks.png) ![alt text](Jenkins-5-stages-green-1.png)
+- [x] Screenshot: Jenkins pipeline successful
+![alt text](Screenshots/jenkins-pipeline-successful.png)
 
-- [x] Screenshot: GitHub repo showing all files pushed
-![alt text](github-repo-showing-files-pushed.png)
-
-
+- [x] Theo Armageddon Approval
+![alt text](Screenshots/theo-armageddon-approval.png)
 ---
 
 ## 8. Teardown / Destroy Infrastructure (Optional)
 
+SSH into your Jenkins server and manually run Terraform destroy (make sure that the bucket no longer has objects in it)
+
 ```bash
-# Destroy the S3 bucket and all contents via Terraform
-cd Terraform/
+cd /var/lib/jenkins/workspace/Class\ 7\ Gut\ Check/Terraform
+export AWS_ACCESS_KEY_ID=your_key
+export AWS_SECRET_ACCESS_KEY=your_secret
+export AWS_DEFAULT_REGION=us-east-1
 terraform destroy -auto-approve
-
-# Verify bucket is gone in AWS Console or via CLI
-aws s3 ls | grep [YOUR-BUCKET-NAME]
-
-# Stop Jenkins if running on EC2 (to avoid ongoing charges)
-sudo systemctl stop jenkins
-
-# Optionally terminate the EC2 instance from AWS Console
-aws ec2 terminate-instances --instance-ids [YOUR-INSTANCE-ID]
 ```
 
 > **Important:** S3 buckets with objects must be emptied before Terraform can destroy
