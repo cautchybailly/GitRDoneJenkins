@@ -53,14 +53,11 @@ class7-gut-check/
 │ ├── variables.tf # Input variables
 │ ├── outputs.tf # Output values (bucket name, ARN)
 │ └── provider.tf # AWS provider configuration
-├── Lab Confirmation Screenshots
+├── Screenshots
+| ├── gut-check-github-files.png
 | ├── gut-check-webhooks.png
-| ├── Jenkins-5-stages-green.png
-| ├── outputs.png
-| ├── s3-bucket-created-with-placeholder.png
-| ├── terraform-initi-successful.png
-| ├── terraform-plan.png
-├── Screenshots/
+| ├── jenkins-5-stages-green.png
+| ├── jenkins-pipeline-successful.png
 | └── theo-armageddon-approval.png
 ```
 
