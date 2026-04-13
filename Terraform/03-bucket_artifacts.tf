@@ -1,5 +1,5 @@
 
-resource "aws_s3_bucket" "Class7_gutcheck_bucket" {
+resource "aws_s3_bucket" "class7_gutcheck_bucket" {
   bucket = "class7-gutcheck-bucket"
   acl    = "private"
 
