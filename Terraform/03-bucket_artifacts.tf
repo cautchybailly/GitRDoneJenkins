@@ -8,7 +8,7 @@ resource "aws_s3_bucket" "Class7_gutcheck_bucket" {
   }
 }
 
-resource "aws_s3_bucket_public_access_block" "class7-gcheck" {
+resource "aws_s3_bucket_public_access_block" "class7-gutcheck" {
   bucket = aws_s3_bucket.class7_gutcheck_bucket.id
 
   block_public_acls  = true
@@ -19,6 +19,8 @@ resource "aws_s3_bucket_public_access_block" "class7-gcheck" {
 }
 
 resource "aws_s3_bucket_policy" "class7_gut_check" {
+  depends_on = [aws_s3_bucket_public_access_block.class7-gutcheck]
+
   bucket = aws_s3_bucket.class7_gutcheck_bucket.id
   policy = jsonencode({
     Version = "2012-10-17"
